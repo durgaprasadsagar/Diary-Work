@@ -136,23 +136,23 @@
       <tbody>
         <tr>
           <td>Telugu</td>
-          <td><input type="text" placeholder="Enter message"></td>
+          <td><input type="text" id="teluguMessage" placeholder="Enter message"></td>
         </tr>
         <tr>
           <td>Hindi</td>
-          <td><input type="text" placeholder="Enter message"></td>
+          <td><input type="text" id="hindiMessage" placeholder="Enter message"></td>
         </tr>
         <tr>
           <td>English</td>
-          <td><input type="text" placeholder="Enter message"></td>
+          <td><input type="text" id="englishMessage" placeholder="Enter message"></td>
         </tr>
         <tr>
           <td>Maths</td>
-          <td><input type="text" placeholder="Enter message"></td>
+          <td><input type="text" id="mathsMessage" placeholder="Enter message"></td>
         </tr>
         <tr>
           <td>EVS</td>
-          <td><input type="text" placeholder="Enter message"></td>
+          <td><input type="text" id="evsMessage" placeholder="Enter message"></td>
         </tr>
       </tbody>
     </table>
@@ -185,12 +185,29 @@
       const day = document.getElementById('day').value;
       const date = document.getElementById('date').value;
 
+      const teluguMessage = document.getElementById('teluguMessage').value || "N/A";
+      const hindiMessage = document.getElementById('hindiMessage').value || "N/A";
+      const englishMessage = document.getElementById('englishMessage').value || "N/A";
+      const mathsMessage = document.getElementById('mathsMessage').value || "N/A";
+      const evsMessage = document.getElementById('evsMessage').value || "N/A";
+
       if (!mobileNumber) {
         alert('Please enter a mobile number to share on WhatsApp.');
         return;
       }
 
-      const message = `Diary Work:\nDate: ${date}\nDay: ${day}\nTeacher Name: ${teacherName}`;
+      const message = `Diary Work:
+Date: ${date}
+Day: ${day}
+Teacher Name: ${teacherName}
+
+Subjects and Messages:
+Telugu: ${teluguMessage}
+Hindi: ${hindiMessage}
+English: ${englishMessage}
+Maths: ${mathsMessage}
+EVS: ${evsMessage}`;
+
       const whatsappURL = `https://wa.me/${mobileNumber}?text=${encodeURIComponent(message)}`;
       window.open(whatsappURL, '_blank');
     }

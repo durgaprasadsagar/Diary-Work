@@ -5,21 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Diary Work</title>
   <style>
+    /* General Styling */
     body {
       font-family: 'Arial', sans-serif;
       margin: 20px;
-      background-color: #f9f9f9;
+      background-color: #f1f4f8;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       background: #ffffff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 10px;
+      overflow: hidden;
     }
 
+    /* School Header Styling */
+    .school-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .school-header h1 {
+      font-size: 48px; /* Larger than h1 */
+      color: #007BFF;
+      text-transform: uppercase;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    /* Table Header Styling */
     .header {
       display: flex;
       justify-content: space-between;
@@ -36,11 +53,13 @@
       text-align: center;
     }
 
-    h1 {
+    .header h1 {
       font-size: 24px;
       color: #333333;
+      text-transform: uppercase;
     }
 
+    /* Table Styling */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -59,6 +78,7 @@
     th {
       background-color: #007BFF;
       color: white;
+      text-transform: uppercase;
     }
 
     td input[type="text"] {
@@ -75,11 +95,13 @@
       border-radius: 4px;
     }
 
+    /* Signature Section */
     .signature {
       text-align: right;
       margin-top: 20px;
     }
 
+    /* Button Styling */
     .buttons {
       text-align: center;
       margin-top: 20px;
@@ -107,10 +129,23 @@
     button:hover {
       opacity: 0.9;
     }
+
+    /* Hide buttons when printing */
+    @media print {
+      .buttons {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- School Header -->
+    <div class="school-header">
+      <h1>SUNSHINE HIGH SCHOOL</h1>
+    </div>
+
+    <!-- Diary Header -->
     <div class="header">
       <div class="left">
         <label>Date: <input type="date" id="date"></label>
@@ -126,6 +161,8 @@
         <label>Mobile Number: <input type="text" id="mobileNumber" placeholder="Enter mobile"></label>
       </div>
     </div>
+
+    <!-- Table -->
     <table>
       <thead>
         <tr>
@@ -156,10 +193,14 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- Signature -->
     <div class="signature">
       <label>Signature:</label>
       <input type="text" placeholder="Enter signature">
     </div>
+
+    <!-- Buttons -->
     <div class="buttons">
       <button class="print-btn" onclick="printPage()">Print</button>
       <button class="share-btn" onclick="shareOnWhatsApp()">Share on WhatsApp</button>

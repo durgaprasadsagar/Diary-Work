@@ -95,6 +95,19 @@
       border-radius: 4px;
     }
 
+    /* Hide dropdown arrow for print */
+    @media print {
+      input[type="date"], input[type="text"] {
+        appearance: none;
+        -webkit-appearance: none;
+        border: none;
+      }
+
+      .buttons {
+        display: none;
+      }
+    }
+
     /* Signature Section */
     .signature {
       text-align: right;
@@ -129,13 +142,6 @@
     button:hover {
       opacity: 0.9;
     }
-
-    /* Hide buttons when printing */
-    @media print {
-      .buttons {
-        display: none;
-      }
-    }
   </style>
 </head>
 <body>
@@ -150,7 +156,7 @@
       <div class="left">
         <label>Date: <input type="date" id="date"></label>
         <br>
-        <label>Day: <input type="text" id="day" placeholder="Enter day"></label>
+        <label>Day: <input type="text" id="day" placeholder="Auto-filled" readonly></label>
       </div>
       <div class="center">
         <h1>Diary Work</h1>
@@ -207,12 +213,28 @@
     </div>
   </div>
   <script>
-    // Set default date to today's date
+    // Automatically set the day based on the selected date
     document.addEventListener('DOMContentLoaded', () => {
       const dateField = document.getElementById('date');
+      const dayField = document.getElementById('day');
+
+      // Set default date to today
       const today = new Date();
       dateField.value = today.toISOString().split('T')[0];
+      dayField.value = getDayName(today);
+
+      // Update day when date changes
+      dateField.addEventListener('change', () => {
+        const selectedDate = new Date(dateField.value);
+        dayField.value = getDayName(selectedDate);
+      });
     });
+
+    // Function to get the day name
+    function getDayName(date) {
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      return days[date.getDay()];
+    }
 
     // Print the page
     function printPage() {

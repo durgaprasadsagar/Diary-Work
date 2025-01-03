@@ -6,13 +6,18 @@
   <title>Diary Work</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       margin: 20px;
+      background-color: #f9f9f9;
     }
 
     .container {
       max-width: 800px;
       margin: 0 auto;
+      background: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border-radius: 8px;
     }
 
     .header {
@@ -31,6 +36,11 @@
       text-align: center;
     }
 
+    h1 {
+      font-size: 24px;
+      color: #333333;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -38,12 +48,31 @@
     }
 
     table, th, td {
-      border: 1px solid #000;
+      border: 1px solid #ccc;
     }
 
     th, td {
       text-align: left;
+      padding: 10px;
+    }
+
+    th {
+      background-color: #007BFF;
+      color: white;
+    }
+
+    td input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="date"], input[type="text"] {
       padding: 8px;
+      width: calc(100% - 16px);
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
 
     .signature {
@@ -51,9 +80,32 @@
       margin-top: 20px;
     }
 
-    input[type="text"], input[type="date"] {
-      padding: 5px;
-      width: calc(100% - 10px);
+    .buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button.print-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    button.share-btn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.9;
     }
   </style>
 </head>
@@ -70,6 +122,8 @@
       </div>
       <div class="right">
         <label>Teacher Name: <input type="text" id="teacherName" placeholder="Enter name"></label>
+        <br>
+        <label>Mobile Number: <input type="text" id="mobileNumber" placeholder="Enter mobile"></label>
       </div>
     </div>
     <table>
@@ -106,13 +160,40 @@
       <label>Signature:</label>
       <input type="text" placeholder="Enter signature">
     </div>
+    <div class="buttons">
+      <button class="print-btn" onclick="printPage()">Print</button>
+      <button class="share-btn" onclick="shareOnWhatsApp()">Share on WhatsApp</button>
+    </div>
   </div>
   <script>
+    // Set default date to today's date
     document.addEventListener('DOMContentLoaded', () => {
       const dateField = document.getElementById('date');
       const today = new Date();
       dateField.value = today.toISOString().split('T')[0];
     });
+
+    // Print the page
+    function printPage() {
+      window.print();
+    }
+
+    // Share on WhatsApp
+    function shareOnWhatsApp() {
+      const mobileNumber = document.getElementById('mobileNumber').value;
+      const teacherName = document.getElementById('teacherName').value;
+      const day = document.getElementById('day').value;
+      const date = document.getElementById('date').value;
+
+      if (!mobileNumber) {
+        alert('Please enter a mobile number to share on WhatsApp.');
+        return;
+      }
+
+      const message = `Diary Work:\nDate: ${date}\nDay: ${day}\nTeacher Name: ${teacherName}`;
+      const whatsappURL = `https://wa.me/${mobileNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappURL, '_blank');
+    }
   </script>
 </body>
 </html>

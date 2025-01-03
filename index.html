@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diary Work</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .header .left, .header .right {
+      flex: 1;
+    }
+
+    .header .center {
+      flex: 2;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid #000;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+
+    .signature {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    input[type="text"], input[type="date"] {
+      padding: 5px;
+      width: calc(100% - 10px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="left">
+        <label>Date: <input type="date" id="date"></label>
+        <br>
+        <label>Day: <input type="text" id="day" placeholder="Enter day"></label>
+      </div>
+      <div class="center">
+        <h1>Diary Work</h1>
+      </div>
+      <div class="right">
+        <label>Teacher Name: <input type="text" id="teacherName" placeholder="Enter name"></label>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Subjects</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Telugu</td>
+          <td><input type="text" placeholder="Enter message"></td>
+        </tr>
+        <tr>
+          <td>Hindi</td>
+          <td><input type="text" placeholder="Enter message"></td>
+        </tr>
+        <tr>
+          <td>English</td>
+          <td><input type="text" placeholder="Enter message"></td>
+        </tr>
+        <tr>
+          <td>Maths</td>
+          <td><input type="text" placeholder="Enter message"></td>
+        </tr>
+        <tr>
+          <td>EVS</td>
+          <td><input type="text" placeholder="Enter message"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="signature">
+      <label>Signature:</label>
+      <input type="text" placeholder="Enter signature">
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const dateField = document.getElementById('date');
+      const today = new Date();
+      dateField.value = today.toISOString().split('T')[0];
+    });
+  </script>
+</body>
+</html>

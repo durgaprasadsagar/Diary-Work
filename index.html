@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Diary Work</title>
   <style>
+    /* General Styling */
     body {
       font-family: 'Arial', sans-serif;
       margin: 20px;
       background-color: #f1f4f8;
     }
+
     .container {
       max-width: 900px;
       margin: 0 auto;
@@ -17,52 +19,117 @@
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       padding: 20px;
       border-radius: 10px;
+      overflow: hidden;
     }
+
+    /* School Header Styling */
     .school-header {
       text-align: center;
       margin-bottom: 20px;
     }
+
     .school-header h1 {
       font-size: 48px;
       color: #007BFF;
       text-transform: uppercase;
+      margin: 0;
       font-weight: bold;
     }
+
+    /* Table Header Styling */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
     }
+
+    .header .left, .header .right {
+      flex: 1;
+    }
+
+    .header .center {
+      flex: 2;
+      text-align: center;
+    }
+
     .header h1 {
       font-size: 24px;
-      color: #333;
+      color: #333333;
       text-transform: uppercase;
     }
+
+    /* Table Styling */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
     }
-    th, td {
+
+    table, th, td {
       border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
     }
+
+    th, td {
+      text-align: left;
+      padding: 10px;
+    }
+
     th {
       background-color: #007BFF;
       color: white;
+      text-transform: uppercase;
     }
-    input[type="text"], input[type="date"], select {
+
+    td input[type="text"] {
       width: 100%;
-      padding: 8px;
+      padding: 5px;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
+
+    input[type="date"], input[type="text"] {
+      padding: 8px;
+      width: calc(100% - 16px);
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .class-section-selection {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .class-section-selection .left, .class-section-selection .right {
+      flex: 1;
+    }
+
+    /* Hide dropdown arrow for print */
+    @media print {
+      input[type="date"], input[type="text"] {
+        appearance: none;
+        -webkit-appearance: none;
+        border: none;
+      }
+
+      .buttons {
+        display: none;
+      }
+    }
+
+    /* Signature Section */
+    .signature {
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    /* Button Styling */
     .buttons {
       text-align: center;
       margin-top: 20px;
     }
+
     button {
       padding: 10px 20px;
       margin: 5px;
@@ -71,27 +138,60 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    button.print-btn { background-color: #28a745; color: white; }
-    button.share-btn { background-color: #007bff; color: white; }
-    button.clear-btn { background-color: #dc3545; color: white; }
-    button:hover { opacity: 0.9; }
-    @media print { .buttons { display: none; } }
+
+    button.print-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    button.share-btn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    button.clear-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- School Header -->
     <div class="school-header">
       <h1>SUNSHINE HIGH SCHOOL</h1>
     </div>
+
+    <!-- Diary Header -->
     <div class="header">
-      <label>Date: <input type="date" id="date"></label>
-      <h1>Diary Work</h1>
-      <label>Teacher: <input type="text" id="teacherName"></label>
+      <div class="left">
+        <label>Date: <input type="date" id="date"></label>
+        <br>
+        <label>Day: <input type="text" id="day" placeholder="Auto-filled" readonly></label>
+      </div>
+      <div class="center">
+        <h1>Diary Work</h1>
+      </div>
+      <div class="right">
+        <label>Teacher Name: <input type="text" id="teacherName" placeholder="Enter name"></label>
+        <br>
+        <label>Mobile Number: <input type="text" id="mobileNumber" placeholder="Enter mobile" oninput="validateMobileNumber()"></label>
+      </div>
     </div>
-    <div>
-      <label>Class: 
+
+    <!-- Class and Section Selection -->
+    <div class="class-section-selection">
+      <div class="left">
+        <label for="classSelect">Class:</label>
         <select id="classSelect" onchange="updateSubjects()">
           <option value="">Select</option>
+          <option value="Nursery">Nursery</option>
+          <option value="LKG">LKG</option>
+          <option value="UKG">UKG</option>
           <option value="1">1st</option>
           <option value="2">2nd</option>
           <option value="3">3rd</option>
@@ -103,27 +203,53 @@
           <option value="9">9th</option>
           <option value="10">10th</option>
         </select>
-      </label>
-      <label>Section:
+      </div>
+      <div class="right">
+        <label for="sectionSelect">Section:</label>
         <select id="sectionSelect">
           <option value="">Select</option>
           <option value="Rose">Rose</option>
           <option value="Lilly">Lilly</option>
+          <option value="Jasmine">Jasmine</option>
+          <option value="Girls">Girls</option>
+          <option value="Boys">Boys</option>
         </select>
-      </label>
+      </div>
     </div>
+
+    <!-- Table for Subjects and Messages -->
     <table>
       <thead>
-        <tr><th>Subjects</th><th>Message</th></tr>
+        <tr>
+          <th>Subjects</th>
+          <th>Message</th>
+        </tr>
       </thead>
-      <tbody id="subjectsTable"></tbody>
+      <tbody>
+        <!-- Dynamic subject rows will be inserted here -->
+      </tbody>
     </table>
+
+    <!-- New Table for Subject Teacher and Mobile Number -->
     <table>
       <thead>
-        <tr><th>Subject Teacher</th><th>Mobile Number</th></tr>
+        <tr>
+          <th>Subject Teacher</th>
+          <th>Mobile Number</th>
+        </tr>
       </thead>
-      <tbody id="teacherTable"></tbody>
+      <tbody id="teacherTableBody">
+        <!-- Dynamic rows for Subject Teacher and Mobile Number will be inserted here -->
+      </tbody>
     </table>
+
+    <!-- Signature -->
+    <div class="signature">
+      <label>Signature:</label>
+      <input type="text" placeholder="Enter signature">
+    </div>
+
+    <!-- Buttons -->
     <div class="buttons">
       <button class="print-btn" onclick="printPage()">Print</button>
       <button class="share-btn" onclick="shareOnWhatsApp()">Share on WhatsApp</button>
@@ -132,73 +258,157 @@
   </div>
 
   <script>
+    // Automatically set the day based on the selected date
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('date').value = new Date().toISOString().split('T')[0];
+      const dateField = document.getElementById('date');
+      const dayField = document.getElementById('day');
+
+      // Set default date to today
+      const today = new Date();
+      dateField.value = today.toISOString().split('T')[0];
+      dayField.value = getDayName(today);
+
+      // Update day when date changes
+      dateField.addEventListener('change', () => {
+        const selectedDate = new Date(dateField.value);
+        dayField.value = getDayName(selectedDate);
+      });
+
+      // Load saved data from localStorage
       loadSavedData();
     });
 
+    function getDayName(date) {
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      return days[date.getDay()];
+    }
+
+    // Update subjects based on selected class
     function updateSubjects() {
-      const subjects = {
-        "1": ["Telugu", "English", "Maths"],
-        "2": ["Telugu", "English", "Maths"],
-        "3": ["Telugu", "English", "Maths", "EVS"],
-        "4": ["Telugu", "English", "Maths", "EVS"],
-        "5": ["Telugu", "English", "Maths", "EVS"],
-        "6": ["Telugu", "English", "Maths", "Science", "Social"],
-        "7": ["Telugu", "English", "Maths", "Science", "Social"],
-        "8": ["Telugu", "English", "Maths", "Physical Science", "Biology", "Social"],
-        "9": ["Telugu", "English", "Maths", "Physical Science", "Biology", "Social"],
-        "10": ["Telugu", "English", "Maths", "Physical Science", "Biology", "Social"]
-      };
       const classSelected = document.getElementById("classSelect").value;
-      const subjectsTable = document.getElementById("subjectsTable");
+      const subjectsTable = document.querySelector("tbody");
       subjectsTable.innerHTML = "";
 
-      subjects[classSelected]?.forEach(subject => {
-        subjectsTable.innerHTML += `
-          <tr>
-            <td>${subject}</td>
-            <td><input type="text" oninput="saveData('${subject}', this.value)"></td>
-          </tr>`;
+      let subjects = [];
+      if (classSelected === "1" || classSelected === "2") {
+        subjects = ["First Language (Telugu)", "Second Language (Hindi)", "English", "Maths"];
+      } else if (classSelected === "3" || classSelected === "4" || classSelected === "5") {
+        subjects = ["First Language (Telugu)", "Second Language (Hindi)", "English", "Maths", "Environmental Science (EVS)"];
+      } else if (classSelected === "6" || classSelected === "7") {
+        subjects = ["First Language (Telugu)", "Second Language (Hindi)", "English", "Maths", "General Science", "Social"];
+      } else if (classSelected === "8" || classSelected === "9" || classSelected === "10") {
+        subjects = ["First Language (Telugu)", "Second Language (Hindi)", "English", "Maths", "Physical Science", "Biological Science", "Social"];
+      }
+
+      subjects.forEach(subject => {
+        const row = <tr>
+          <td>${subject}</td>
+          <td><input type="text" placeholder="Enter message" oninput="saveMessage('${subject}', this.value)"></td>
+        </tr>;
+        subjectsTable.innerHTML += row;
       });
 
-      const teacherTable = document.getElementById("teacherTable");
-      teacherTable.innerHTML = "";
-      subjects[classSelected]?.forEach(subject => {
-        teacherTable.innerHTML += `
-          <tr>
-            <td><input type="text" placeholder="Teacher for ${subject}" oninput="saveData('${subject}_teacher', this.value)"></td>
-            <td><input type="text" placeholder="Mobile" oninput="validateMobile(this)"></td>
-          </tr>`;
+      // Update the second table with subject teacher and mobile number
+      const teacherTableBody = document.getElementById("teacherTableBody");
+      teacherTableBody.innerHTML = "";
+      subjects.forEach(subject => {
+        const teacherRow = <tr>
+          <td><input type="text" placeholder="Enter teacher name for ${subject}" oninput="saveTeacherName('${subject}', this.value)"></td>
+          <td><input type="text" placeholder="Enter mobile number" oninput="saveTeacherMobile('${subject}', this.value)"></td>
+        </tr>;
+        teacherTableBody.innerHTML += teacherRow;
       });
     }
 
-    function saveData(key, value) {
-      localStorage.setItem(key, value);
+    // Save subject message to localStorage
+    function saveMessage(subject, message) {
+      localStorage.setItem(subject, message);
     }
 
-    function validateMobile(input) {
-      input.value = input.value.replace(/\D/g, '').slice(0, 10);
+    // Save teacher name to localStorage
+    function saveTeacherName(subject, teacherName) {
+      localStorage.setItem(subject + '_teacher', teacherName);
     }
 
-    function shareOnWhatsApp() {
-      let message = `Diary Work\nDate: ${document.getElementById('date').value}\nClass: ${document.getElementById('classSelect').value}\nSection: ${document.getElementById('sectionSelect').value}\n`;
-      document.querySelectorAll('#subjectsTable tr').forEach(row => {
-        message += `${row.cells[0].textContent}: ${row.cells[1].querySelector('input').value}\n`;
-      });
-      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    // Save teacher mobile number to localStorage
+    function saveTeacherMobile(subject, mobileNumber) {
+      localStorage.setItem(subject + '_mobile', mobileNumber);
     }
 
-    function clearAll() {
-      document.getElementById('classSelect').value = '';
-      document.getElementById('sectionSelect').value = '';
-      document.getElementById('subjectsTable').innerHTML = '';
-      document.getElementById('teacherTable').innerHTML = '';
-      localStorage.clear();
+    // Save teacher name, mobile, and signature to localStorage
+    document.getElementById('teacherName').addEventListener('input', () => {
+      localStorage.setItem('teacherName', document.getElementById('teacherName').value);
+    });
+
+    document.getElementById('mobileNumber').addEventListener('input', () => {
+      localStorage.setItem('mobileNumber', document.getElementById('mobileNumber').value);
+    });
+
+    document.querySelector('.signature input').addEventListener('input', () => {
+      localStorage.setItem('signature', document.querySelector('.signature input').value);
+    });
+
+    // Load saved data
+    function loadSavedData() {
+      const savedDate = localStorage.getItem('date');
+      const savedDay = localStorage.getItem('day');
+      if (savedDate) {
+        document.getElementById('date').value = savedDate;
+        document.getElementById('day').value = savedDay || getDayName(new Date(savedDate));
+      }
+
+      document.getElementById('teacherName').value = localStorage.getItem('teacherName') || '';
+      document.getElementById('mobileNumber').value = localStorage.getItem('mobileNumber') || '';
+      document.querySelector('.signature input').value = localStorage.getItem('signature') || '';
     }
 
+    // Print the page
     function printPage() {
       window.print();
+    }
+
+    // Share on WhatsApp
+    function shareOnWhatsApp() {
+      const mobileNumber = document.getElementById('mobileNumber').value;
+      const teacherName = document.getElementById('teacherName').value;
+      const day = document.getElementById('day').value;
+      const date = document.getElementById('date').value;
+
+      if (!mobileNumber) {
+        alert('Please enter a mobile number to share on WhatsApp.');
+        return;
+      }
+
+      let message = Diary Work:\nDate: ${date}\nDay: ${day}\nTeacher: ${teacherName}\n\n;
+
+      document.querySelectorAll('tbody tr').forEach(row => {
+        const subject = row.cells[0].textContent;
+        const msg = row.cells[1].querySelector('input').value;
+        message += ${subject}: ${msg}\n;
+      });
+
+      const url = https://wa.me/${mobileNumber}?text=${encodeURIComponent(message)};
+      window.open(url, '_blank');
+    }
+
+    // Clear all fields
+    function clearAll() {
+      document.getElementById('date').value = '';
+      document.getElementById('day').value = '';
+      document.getElementById('teacherName').value = '';
+      document.getElementById('mobileNumber').value = '';
+      document.getElementById('classSelect').value = '';
+      document.getElementById('sectionSelect').value = '';
+      document.querySelectorAll("tbody tr input").forEach(input => {
+        input.value = '';
+      });
+      document.querySelector('.signature input').value = '';
+    }
+
+    // Allow digits only in mobile number input
+    function validateMobileNumber() {
+      const mobileInput = document.getElementById('mobileNumber');
+      mobileInput.value = mobileInput.value.replace(/\D/g, '');
     }
   </script>
 </body>

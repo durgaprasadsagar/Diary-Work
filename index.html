@@ -301,22 +301,21 @@
       }
 
       subjects.forEach(subject => {
-        const row = <tr>
-          <td>${subject}</td>
-          <td><input type="text" placeholder="Enter message" oninput="saveMessage('${subject}', this.value)"></td>
-        </tr>;
-        subjectsTable.innerHTML += row;
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${subject}</td><td><input type="text" placeholder="Enter message" oninput="saveMessage('${subject}', this.value)"></td>`;
+        subjectsTable.appendChild(row);
+
       });
 
       // Update the second table with subject teacher and mobile number
       const teacherTableBody = document.getElementById("teacherTableBody");
       teacherTableBody.innerHTML = "";
       subjects.forEach(subject => {
-        const teacherRow = <tr>
-          <td><input type="text" placeholder="Enter teacher name for ${subject}" oninput="saveTeacherName('${subject}', this.value)"></td>
-          <td><input type="text" placeholder="Enter mobile number" oninput="saveTeacherMobile('${subject}', this.value)"></td>
-        </tr>;
-        teacherTableBody.innerHTML += teacherRow;
+        const teacherRow = document.createElement('tr');
+teacherRow.innerHTML = `<td><input type="text" placeholder="Enter teacher name for ${subject}" oninput="saveTeacherName('${subject}', this.value)"></td>
+                        <td><input type="text" placeholder="Enter mobile number" oninput="saveTeacherMobile('${subject}', this.value)"></td>`;
+teacherTableBody.appendChild(teacherRow);
+
       });
     }
 
@@ -329,6 +328,10 @@
     function saveTeacherName(subject, teacherName) {
       localStorage.setItem(subject + '_teacher', teacherName);
     }
+    function validateMobileNumber() {
+  const mobileInput = document.getElementById('mobileNumber');
+  mobileInput.value = mobileInput.value.replace(/\D/g, '').slice(0, 10);
+}
 
     // Save teacher mobile number to localStorage
     function saveTeacherMobile(subject, mobileNumber) {
@@ -379,31 +382,30 @@
         return;
       }
 
-      let message = Diary Work:\nDate: ${date}\nDay: ${day}\nTeacher: ${teacherName}\n\n;
+      let message = `Diary Work:\nDate: ${date}\nDay: ${day}\nTeacher: ${teacherName}\n\n`;
+document.querySelectorAll('tbody tr').forEach(row => {
+  const subject = row.cells[0].textContent;
+  const msg = row.cells[1].querySelector('input').value;
+  message += `${subject}: ${msg}\n`;
+});
 
-      document.querySelectorAll('tbody tr').forEach(row => {
-        const subject = row.cells[0].textContent;
-        const msg = row.cells[1].querySelector('input').value;
-        message += ${subject}: ${msg}\n;
-      });
+const url = `https://wa.me/${mobileNumber}?text=${encodeURIComponent(message)}`;
+window.open(url, '_blank');
 
-      const url = https://wa.me/${mobileNumber}?text=${encodeURIComponent(message)};
-      window.open(url, '_blank');
     }
 
     // Clear all fields
     function clearAll() {
-      document.getElementById('date').value = '';
-      document.getElementById('day').value = '';
-      document.getElementById('teacherName').value = '';
-      document.getElementById('mobileNumber').value = '';
-      document.getElementById('classSelect').value = '';
-      document.getElementById('sectionSelect').value = '';
-      document.querySelectorAll("tbody tr input").forEach(input => {
-        input.value = '';
-      });
-      document.querySelector('.signature input').value = '';
-    }
+  localStorage.clear();
+  document.getElementById('date').value = '';
+  document.getElementById('day').value = '';
+  document.getElementById('teacherName').value = '';
+  document.getElementById('mobileNumber').value = '';
+  document.getElementById('classSelect').value = '';
+  document.getElementById('sectionSelect').value = '';
+  document.querySelectorAll("tbody tr input").forEach(input => input.value = '');
+  document.querySelector('.signature input').value = '';
+}
 
     // Allow digits only in mobile number input
     function validateMobileNumber() {
